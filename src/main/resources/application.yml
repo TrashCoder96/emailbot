@@ -1,0 +1,13 @@
+admin:
+  username: user
+  password: user
+bots:
+ sql_dialect: org.hibernate.dialect.PostgreSQL9Dialect
+server:
+  port: 20091
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/emailskypes?createDatabaseIfNotExist=true
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
