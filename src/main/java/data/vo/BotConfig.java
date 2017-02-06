@@ -36,6 +36,9 @@ public class BotConfig {
     @Column
     private String skype_id;
 
+    @Column
+    private Boolean runned;
+
     public String getId() {
         return id;
     }
@@ -106,6 +109,14 @@ public class BotConfig {
 
     public void setSkype_id(String skype_id) {
         this.skype_id = skype_id;
+    }
+
+    public Boolean getRunned() {
+        return runned;
+    }
+
+    public void setRunned(Boolean runned) {
+        this.runned = runned;
     }
 }
 
