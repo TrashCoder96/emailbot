@@ -33,6 +33,9 @@ public class BotConfig {
     @Column
     private String microsoft_secret;
 
+    @Column
+    private String skype_id;
+
     public String getId() {
         return id;
     }
@@ -95,6 +98,14 @@ public class BotConfig {
 
     public void setCron(String cron) {
         this.cron = cron;
+    }
+
+    public String getSkype_id() {
+        return skype_id;
+    }
+
+    public void setSkype_id(String skype_id) {
+        this.skype_id = skype_id;
     }
 }
 

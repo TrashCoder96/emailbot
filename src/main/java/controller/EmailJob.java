@@ -33,6 +33,8 @@ import java.util.Properties;
  */
 public class EmailJob implements Job {
 
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     private String updateToken(String client_id, String secret) throws IOException {
         String url = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
         HttpClient client = HttpClientBuilder.create().build();
@@ -54,12 +56,11 @@ public class EmailJob implements Job {
         return resRoot.getAccess_token();
     }
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        try {Properties properties = new Properties();
-            /*properties.put("mail.store.protocol", "imaps");
+        try {
+            Properties properties = new Properties();
+            properties.put("mail.store.protocol", "imaps");
             properties.put("mail.imaps.port", "993");
             properties.put("mail.imaps.starttls.enable", "true");
             Session emailSession = Session.getInstance(properties);
@@ -74,9 +75,6 @@ public class EmailJob implements Job {
                     context.getJobDetail().getJobDataMap().getString("email"),
                     context.getJobDetail().getJobDataMap().getString("emailpassword"));
             IMAPStore imapStore = (IMAPStore) store;
-
-            System.out.println("imapStore ---" + imapStore);
-
             IMAPFolder in = (IMAPFolder)imapStore.getFolder("INBOX");
 
             in.open(Folder.READ_WRITE);
@@ -107,23 +105,25 @@ public class EmailJob implements Job {
                 m.setFlags(flags, true);
             }
             //Iterate through the messages
-            imapStore.close();*/
+            imapStore.close();
 
 
-            if (true) {
-                OkHttpClient okHttpClient = new OkHttpClient();
-                Root root = new Root();
-                root.setMessage(new controller.Message());
-                root.getMessage().setContent(String.valueOf(567));
-                String json = new ObjectMapper().writeValueAsString(root);
-                okhttp3.RequestBody body = okhttp3.RequestBody.create(JSON, json);
+            if (letters.size() > 0) {
+                for (int i = 0; i < letters.size(); i++) {
+                    OkHttpClient okHttpClient = new OkHttpClient();
+                    Root root = new Root();
+                    root.setMessage(new controller.Message());
+                    root.getMessage().setContent(letters.get(i).getMessage());
+                    String json = new ObjectMapper().writeValueAsString(root);
+                    okhttp3.RequestBody body = okhttp3.RequestBody.create(JSON, json);
 
-                okhttp3.Request request = new  okhttp3.Request.Builder()
-                        .addHeader("Authorization", "Bearer " + updateToken(context.getJobDetail().getJobDataMap().getString("microsoftid"), context.getJobDetail().getJobDataMap().getString("microsoftsecret")))
-                        .url("https://apis.skype.com/v2/conversations/1:kiberaction@yandex.ru/activities")
-                        .post(body)
-                        .build();
-                okhttp3.Response response = okHttpClient.newCall(request).execute();
+                    okhttp3.Request request = new  okhttp3.Request.Builder()
+                            .addHeader("Authorization", "Bearer " + updateToken(context.getJobDetail().getJobDataMap().getString("microsoftid"), context.getJobDetail().getJobDataMap().getString("microsoftsecret")))
+                            .url("https://apis.skype.com/v2/conversations/" + context.getJobDetail().getJobDataMap().getString("skypeid") + "/activities")
+                            .post(body)
+                            .build();
+                    okhttp3.Response response = okHttpClient.newCall(request).execute();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

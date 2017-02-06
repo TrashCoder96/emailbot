@@ -34,6 +34,7 @@ public class ManagementController {
         job.getJobDataMap().put("emailserver", botConfig.getEmailserver());
         job.getJobDataMap().put("microsoftid", botConfig.getMicrosoft_id());
         job.getJobDataMap().put("microsoftsecret", botConfig.getMicrosoft_secret());
+        job.getJobDataMap().put("skypeid", botConfig.getSkype_id());
         this.schedulerFactoryBean.getScheduler().scheduleJob(job, trigger);
     }
 
@@ -57,6 +58,7 @@ public class ManagementController {
         botConfig.setMicrosoft_id(paramsRo.getParams().get("microsoftid"));
         botConfig.setMicrosoft_secret(paramsRo.getParams().get("microsoftsecret"));
         botConfig.setEmailserver(paramsRo.getParams().get("emailserver"));
+        botConfig.setSkype_id(paramsRo.getParams().get("skypeid"));
         emailSkypeService.updateBotConfig(botConfig);
     }
 
