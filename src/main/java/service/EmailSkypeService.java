@@ -81,7 +81,7 @@ public class EmailSkypeService {
             job.getJobDataMap().put("microsoftsecret", botConfig.getMicrosoft_secret());
             job.getJobDataMap().put("skypeid", botConfig.getSkype_id());
             this.schedulerFactoryBean.getScheduler().scheduleJob(job, trigger);
-            botConfig.setRunned(false);
+            botConfig.setRunned(true);
         } else {
             throw new RuntimeException("Bot with id = " + id + " already runned");
         }
