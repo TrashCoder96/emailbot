@@ -16,10 +16,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import javax.mail.*;
-import javax.mail.search.AndTerm;
-import javax.mail.search.ComparisonTerm;
-import javax.mail.search.ReceivedDateTerm;
-import javax.mail.search.SearchTerm;
+import javax.mail.search.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,6 +67,7 @@ public class EmailJob implements Job {
             Store store = emailSession.getStore("imaps");
 
             //change the user and password accordingly
+
             store.connect(
                     context.getJobDetail().getJobDataMap().getString("emailserver"),
                     context.getJobDetail().getJobDataMap().getString("email"),
@@ -87,7 +85,8 @@ public class EmailJob implements Job {
                         SearchTerm olderThan = new ReceivedDateTerm(ComparisonTerm.LT, DateTime.now().toDate());
                         SearchTerm newerThan = new ReceivedDateTerm(ComparisonTerm.GT, DateTime.now().minusHours(24).toDate());
                         SearchTerm andTerm = new AndTerm(olderThan, newerThan);
-                        return msg.match(andTerm);
+                        SearchTerm andTerm1 = new AndTerm(andTerm, new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+                        return msg.match(andTerm1);
                     } catch (MessagingException e) {
                         e.printStackTrace();
                     }

@@ -28,7 +28,10 @@ public class EmailSkypeService {
         if (botConfig == null) {
             botConfig = new BotConfig();
             botConfig.setId(paramsRo.getId());
-        } else if (!botConfig.getRunned()) {
+            botConfig.setRunned(false);
+        }
+
+        if (botConfig != null && !botConfig.getRunned()) {
             if (paramsRo.getParams().get("name") != null)
                 botConfig.setName(paramsRo.getParams().get("name"));
             else
@@ -71,7 +74,7 @@ public class EmailSkypeService {
     @Transactional
     public void start(String id) throws SchedulerException {
         BotConfig botConfig = botConfigRepository.findOne(id);
-        if (!botConfig.getRunned()) {
+        if (botConfig != null && !botConfig.getRunned()) {
             Trigger trigger = TriggerBuilder.newTrigger().withIdentity(id).withSchedule(CronScheduleBuilder.cronSchedule(botConfig.getCron())).build();
             JobDetail job = JobBuilder.newJob(EmailJob.class).withIdentity(id).build();
             job.getJobDataMap().put("email", botConfig.getEmail());
@@ -90,7 +93,7 @@ public class EmailSkypeService {
     @Transactional
     public void stop(String id) throws SchedulerException {
         BotConfig botConfig = botConfigRepository.findOne(id);
-        if (botConfig.getRunned()) {
+        if (botConfig != null && botConfig.getRunned()) {
             this.schedulerFactoryBean.getScheduler().unscheduleJob(TriggerKey.triggerKey(id));
             this.schedulerFactoryBean.getScheduler().deleteJob(JobKey.jobKey(id));
             botConfig.setRunned(false);

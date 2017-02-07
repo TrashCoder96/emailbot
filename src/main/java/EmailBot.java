@@ -32,10 +32,10 @@ import java.io.InputStreamReader;
 @ComponentScan(basePackageClasses = { WebConfig.class })
 public class EmailBot extends SpringBootServletInitializer {
 
-    @Value("${service.host}")
+    @Value("${main.host}")
     private String mainhost;
 
-    @Value("${service.port}")
+    @Value("${main.port}")
     private String mainport;
 
     @Value("${server.name}")

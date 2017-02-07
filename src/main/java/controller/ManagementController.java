@@ -27,7 +27,7 @@ public class ManagementController {
 
     @RequestMapping(value = "/stop", method = RequestMethod.POST)
     public void stop(@RequestParam String id) throws SchedulerException {
-       emailSkypeService.start(id);
+       emailSkypeService.stop(id);
     }
 
     @RequestMapping(value = "/changeParams", method = RequestMethod.POST, produces = "application/json")
