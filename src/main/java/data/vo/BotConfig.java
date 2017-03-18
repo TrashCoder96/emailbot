@@ -13,6 +13,9 @@ public class BotConfig {
     private String id;
 
     @Column
+    private String accountId;
+
+    @Column
     private String cron;
 
     @Column
@@ -117,6 +120,14 @@ public class BotConfig {
 
     public void setRunned(Boolean runned) {
         this.runned = runned;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 }
 
