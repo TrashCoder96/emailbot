@@ -9,7 +9,7 @@ server:
   name: SKYPE
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/emailskypes?createDatabaseIfNotExist=true
+    url: jdbc:postgresql://localhost:5432/emailbot?createDatabaseIfNotExist=true
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
