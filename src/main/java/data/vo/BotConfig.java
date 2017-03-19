@@ -1,6 +1,7 @@
 package data.vo;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Created by asus-pc on 04.02.2017.
@@ -10,7 +11,7 @@ import javax.persistence.*;
 public class BotConfig {
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     @Column
     private String accountId;

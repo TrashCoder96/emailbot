@@ -1,13 +1,14 @@
 package ro;
 
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by ivan on 18.03.17.
  */
 public class BotRo {
 
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     private String name;
 

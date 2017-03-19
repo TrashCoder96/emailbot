@@ -141,6 +141,7 @@ public class ManagementService implements IManagementService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BotRo> getBots(String account_id) {
         List<BotConfig> botConfigs = botConfigRepository.findByAccountId(account_id);
         List<BotRo> botRos = new ArrayList<BotRo>();
@@ -156,21 +157,48 @@ public class ManagementService implements IManagementService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BotRo getBot(String botId) {
+        BotConfig botConfig = botConfigRepository.findOne(botId);
+        BotRo botRo = new BotRo();
+        botRo.setId(botConfig.getId());
+        botRo.setName(botConfig.getName());
+        botRo.setParams(new HashMap<String ,String>());
         return new BotRo();
     }
 
     @Override
+    @Transactional
     public void deleteBot(String botId) {
-
+        botConfigRepository.delete(botId);
     }
 
     @Override
+    @Transactional
     public BotRo createBot(String name, String account_id) {
-        return new BotRo();
+        BotConfig botConfig = new BotConfig();
+        botConfig.setName(name);
+        botConfig.setAccountId(account_id);
+        botConfig.setRunned(false);
+        botConfig = botConfigRepository.save(botConfig);
+        BotRo botRo = new BotRo();
+        botRo.setId(botConfig.getId());
+        botRo.setName(botConfig.getName());
+        botRo.setType("SKYPE");
+        botRo.setParams(new HashMap<String, String>());
+        botRo.getParams().put("name", null);
+        botRo.getParams().put("cron", null);
+        botRo.getParams().put("email", null);
+        botRo.getParams().put("emailpassword", null);
+        botRo.getParams().put("microsoftid", null);
+        botRo.getParams().put("microsoftsecret", null);
+        botRo.getParams().put("emailserver", null);
+        botRo.getParams().put("skypeid", null);
+        return botRo;
     }
 
     @Override
+    @Transactional
     public Boolean checkAccess(String botId, String account_id) {
         return true;
     }

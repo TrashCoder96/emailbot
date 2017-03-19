@@ -1,6 +1,6 @@
 package controller;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class ParamsRo {
 
-    @NotBlank
+    @NotEmpty
     private String id;
 
     private HashMap<String, String> params;

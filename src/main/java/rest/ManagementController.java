@@ -9,6 +9,7 @@ import ro.BotRo;
 import ro.BotTypeInfoRo;
 import service.IManagementService;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,12 @@ public class ManagementController {
         BotTypeInfoRo botTypeInfoRo = new BotTypeInfoRo();
         botTypeInfoRo.setParams(map);
         botTypeInfoRo.setName("SKYPE");
-        botTypeInfoRo.setDescription("none");
-        return new ResponseEntity<BotTypeInfoRo>(HttpStatus.OK);
+        botTypeInfoRo.setDescription("Этот тип ботов служит для прослушивания почты и пересылки через скайп");
+        return new ResponseEntity<BotTypeInfoRo>(botTypeInfoRo, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/changeBotParams", method = RequestMethod.POST)
-    public ResponseEntity changeBotParams(@RequestBody ParamsRo request) {
+    public ResponseEntity changeBotParams(@RequestBody @Valid ParamsRo request) {
         managementService.changeBotParams(request);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -78,8 +79,7 @@ public class ManagementController {
 
     @RequestMapping(value = "/createBot", method = RequestMethod.POST)
     public ResponseEntity<BotRo> createBot(@RequestParam String name, @RequestParam String account_id) {
-        managementService.createBot(name, account_id);
-        return new ResponseEntity<BotRo>(HttpStatus.OK);
+        return new ResponseEntity<BotRo>(managementService.createBot(name, account_id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/checkAccess")
